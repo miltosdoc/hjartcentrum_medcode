@@ -1,0 +1,9 @@
+[core]
+    autocrlf = input
+    filemode = true
+    
+[push]
+    default = simple
+    
+[init]
+    defaultBranch = main

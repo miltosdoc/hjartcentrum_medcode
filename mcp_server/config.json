@@ -1,0 +1,91 @@
+{
+  "name": "Hjärtcentrum Halland MedCode MCP Server",
+  "version": "1.0.0",
+  "description": "AI-powered clinical decision support system for Hjärtcentrum Halland's FR2000 management system. Provides instant access to 186 guidelines covering patient safety, clinical procedures, quality management, and regulatory compliance.",
+  "author": "Hjärtcentrum Halland AB",
+  "license": "MIT",
+  "repository": "https://github.com/miltosdoc/hjartcentrum_medcode",
+  "mcp": {
+    "server": {
+      "name": "hjartcentrum-medcode",
+      "version": "1.0.0",
+      "description": "Clinical decision support and knowledge retrieval for Hjärtcentrum Halland",
+      "endpoints": {
+        "search_knowledge": {
+          "description": "Search across all Hjärtcentrum Halland guidelines and procedures",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "description": "Clinical question or topic to search for",
+              "required": true
+            },
+            "max_results": {
+              "type": "integer",
+              "description": "Maximum number of results (default: 5)",
+              "default": 5,
+              "optional": true
+            }
+          }
+        },
+        "get_chapter": {
+          "description": "Retrieve specific document chapter",
+          "parameters": {
+            "guideline_slug": {
+              "type": "string",
+              "description": "Document identifier (from search results)",
+              "required": true
+            },
+            "chapter_title": {
+              "type": "string", 
+              "description": "Chapter title to retrieve",
+              "required": true
+            }
+          }
+        },
+        "list_chapters": {
+          "description": "List all chapters in a specific document",
+          "parameters": {
+            "guideline_slug": {
+              "type": "string",
+              "description": "Document identifier",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "knowledge_base": {
+    "total_guidelines": 186,
+    "total_chapters": 1458,
+    "sections_covered": [
+      "01_Ledning - Management & Leadership",
+      "02_Patientsakerhet - Patient Safety",
+      "03_Kvalitet - Quality Management", 
+      "04_Miljö - Environmental Management",
+      "05_Arbetsmiljö - Work Environment",
+      "06_Informationssäkerhet - Information Security",
+      "07_Medicinteknik - Medical Technology",
+      "08_Processkartor - Process Maps",
+      "09_Avvikelse_Risk - Deviation & Risk",
+      "10_Mål_Uppföljning - Goals & Follow-up",
+      "11_Rapporter - Reports",
+      "12_Leverantorer_Inköp - Suppliers & Procurement",
+      "13_HR_Kompetens - HR & Competence",
+      "14_Beredskap_Nödläge - Emergency Preparedness",
+      "15_Dokumentstyrning - Document Control",
+      "16_Marknad_Kommunikation - Marketing & Communication"
+    ],
+    "key_documents": [
+      "Handbook - Management System (HC-HB-001)",
+      "Policies (HC-POL-001 to HC-POL-009)",
+      "Patient Flow Processes (HC-PROC-001)",
+      "Quality Routines (HC-RUT series)",
+      "Medical Equipment Procedures (HC-RUT-071+)",
+      "Emergency Protocols (HC-RUT-141+)",
+      "Lex Maria Reporting (HC-RUT-007)",
+      "Risk Management (HC-RISK-001)",
+      "Environmental Aspects (HC-REG-041)"
+    ]
+  }
+}
