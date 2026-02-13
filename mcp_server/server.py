@@ -10,6 +10,7 @@ from typing import Any, Dict
 sys.path.append(str(Path(__file__).parent.parent))
 
 from hc_mcp.indexer import search, get_doc
+from hc_mcp.updater import save_update
 
 DB_PATH = Path(__file__).parent.parent / "hc_mcp" / "hc_knowledge.db"
 
@@ -54,6 +55,19 @@ def handle_tools_list():
                     "required": ["path"],
                 },
             },
+            {
+                "name": "save_update",
+                "description": "Save an update note (versioned) into updates/",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "title": {"type": "string"},
+                        "body": {"type": "string"},
+                        "tags": {"type": "array", "items": {"type": "string"}}
+                    },
+                    "required": ["title", "body"]
+                }
+            }
         ]
     }
 
@@ -69,6 +83,12 @@ def handle_tools_call(params: Dict[str, Any]):
     if name == "get_document":
         path = args.get("path", "")
         data = get_doc(DB_PATH, path=path)
+        return {"content": [{"type": "text", "text": json.dumps(data, ensure_ascii=False)}]}
+    if name == "save_update":
+        title = args.get("title", "")
+        body = args.get("body", "")
+        tags = args.get("tags", [])
+        data = save_update(title=title, body=body, tags=tags)
         return {"content": [{"type": "text", "text": json.dumps(data, ensure_ascii=False)}]}
     raise ValueError(f"Unknown tool: {name}")
 
