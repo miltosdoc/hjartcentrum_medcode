@@ -12,11 +12,11 @@
       "description": "Clinical decision support and knowledge retrieval for Hjärtcentrum Halland",
       "endpoints": {
         "search_knowledge": {
-          "description": "Search across all Hjärtcentrum Halland guidelines and procedures",
+          "description": "Search across Hjärtcentrum Halland sources (Ledningssystem + Webbportal)",
           "parameters": {
             "query": {
               "type": "string",
-              "description": "Clinical question or topic to search for",
+              "description": "Topic to search for",
               "required": true
             },
             "max_results": {
@@ -27,27 +27,12 @@
             }
           }
         },
-        "get_chapter": {
-          "description": "Retrieve specific document chapter",
+        "get_document": {
+          "description": "Retrieve a full document by path (from search results)",
           "parameters": {
-            "guideline_slug": {
+            "path": {
               "type": "string",
-              "description": "Document identifier (from search results)",
-              "required": true
-            },
-            "chapter_title": {
-              "type": "string", 
-              "description": "Chapter title to retrieve",
-              "required": true
-            }
-          }
-        },
-        "list_chapters": {
-          "description": "List all chapters in a specific document",
-          "parameters": {
-            "guideline_slug": {
-              "type": "string",
-              "description": "Document identifier",
+              "description": "Absolute path returned from search results",
               "required": true
             }
           }

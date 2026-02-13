@@ -1,4 +1,11 @@
-medcode>=1.0.0
 flask>=2.0.0
 requests>=2.25.0
 python-dotenv>=0.19.0
+pypdf>=4.0.0
+pdfplumber>=0.10.0
+python-docx>=1.1.0
+openpyxl>=3.1.0
+pandas>=2.0.0
+markdown>=3.5.0
+beautifulsoup4>=4.12.0
+reportlab>=4.0.0

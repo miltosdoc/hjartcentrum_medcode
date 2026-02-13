@@ -11,23 +11,20 @@ echo "🔄 Hjärtcentrum Halland - Document Update Process"
 echo "=================================================="
 
 # Check dependencies
-if ! command -v medcode &> /dev/null; then
-    echo "❌ ERROR: MedCode not installed. Run: pip install medcode"
+if ! python3 -c "import hc_mcp" &> /dev/null; then
+    echo "❌ ERROR: hc_mcp not available. Run: python3 -m pip install -r requirements.txt"
     exit 1
 fi
 
 # Function to process documents
 process_documents() {
-    echo "📚 Processing documents in source_pdfs/..."
+    echo "📚 Building index from HC folders..."
     cd "$PROJECT_ROOT"
-    
-    # Process all PDFs
-    medcode process_documents
-    
+    bash "$PROJECT_ROOT/scripts/build_index.sh"
     if [ $? -eq 0 ]; then
-        echo "✅ Documents processed successfully"
+        echo "✅ Index built successfully"
     else
-        echo "❌ ERROR: Document processing failed"
+        echo "❌ ERROR: Index build failed"
         exit 1
     fi
 }
@@ -35,7 +32,7 @@ process_documents() {
 # Function to validate search functionality
 validate_search() {
     echo "🔍 Validating search functionality..."
-    
+
     # Test Swedish clinical queries
     test_queries=(
         "Lex Maria anmälan vårdskada"
@@ -44,11 +41,11 @@ validate_search() {
         "medicinteknisk utrustning"
         "kvalitetsledning"
     )
-    
+
     for query in "${test_queries[@]}"; do
         echo "  Testing: $query"
         result=$(medcode search_knowledge "$query" 2>/dev/null)
-        
+
         if [ $? -eq 0 ]; then
             echo "  ✅ Search working"
         else
@@ -56,7 +53,7 @@ validate_search() {
             return 1
         fi
     done
-    
+
     echo "✅ Search validation complete"
 }
 
@@ -72,43 +69,29 @@ show_status() {
 create_backup() {
     echo "💾 Creating backup..."
     backup_dir="$PROJECT_ROOT/backups/$(date +%Y%m%d_%H%M%S)"
-    
+
     mkdir -p "$backup_dir"
     cp -r "$PROJECT_ROOT/medcode/knowledge" "$backup_dir/" 2>/dev/null || true
-    
+
     echo "  Backup created: $backup_dir"
 }
 
 # Main execution
 main() {
     echo "Starting document update process..."
-    
-    # Check if source directory has PDFs
-    if [ ! -d "$PROJECT_ROOT/source_pdfs" ]; then
-        echo "❌ ERROR: source_pdfs directory not found"
-        exit 1
-    fi
-    
-    pdf_count=$(find "$PROJECT_ROOT/source_pdfs" -name "*.pdf" | wc -l | tr -d ' ')
-    echo "  Found $pdf_count PDF documents"
-    
-    if [ "$pdf_count" -eq 0 ]; then
-        echo "❌ ERROR: No PDF files found in source_pdfs/"
-        exit 1
-    fi
-    
+
     # Create backup
     create_backup
-    
+
     # Process documents
     process_documents
-    
+
     # Validate functionality
     validate_search
-    
+
     # Show status
     show_status
-    
+
     echo ""
     echo "🎉 Update complete!"
     echo "   Knowledge base ready for clinical use"

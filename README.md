@@ -1,6 +1,6 @@
-# Hjärtcentrum Halland MedCode MCP Server
+# Hjärtcentrum Halland HC MCP Server
 
-AI-powered clinical decision support system for Hjärtcentrum Halland's FR2000 management system, providing instant access to 186 guidelines and 1,458 chapters covering patient safety, clinical procedures, quality management, and regulatory compliance.
+Local clinical knowledge MCP for Hjärtcentrum Halland (HC_Ledningssystem + HC_Webbportal). Indexes all files and provides search + document recall.
 
 ## 🚀 Quick Start
 
@@ -12,27 +12,17 @@ git clone https://github.com/miltosdoc/hjartcentrum_medcode
 cd hjartcentrum_medcode
 
 # Install dependencies
-pip install -r requirements.txt
-
-# Install MedCode
-pip install medcode
+python3 -m pip install -r requirements.txt
 ```
 
 ### Configuration
 
-1. Copy PDF documents to knowledge base:
+1. Build index from HC folders:
 ```bash
-# Add your HC_Ledningssystem PDFs to source_pdfs/
-cp -r /path/to/HC_Ledningssystem/*.pdf source_pdfs/
+bash scripts/build_index.sh
 ```
 
-2. Process documents:
-```bash
-# Extract and index knowledge
-medcode process_documents
-```
-
-3. Start MCP server:
+2. Start MCP server:
 ```bash
 python mcp_server/server.py
 ```
@@ -40,7 +30,7 @@ python mcp_server/server.py
 ## 📋 Available Functions
 
 ### `search_knowledge`
-Search across all Hjärtcentrum Halland guidelines and procedures.
+Search across Hjärtcentrum Halland sources (Ledningssystem + Webbportal).
 
 **Parameters:**
 - `query` (string, required): Clinical question or topic
@@ -57,36 +47,18 @@ Search across all Hjärtcentrum Halland guidelines and procedures.
 }
 ```
 
-### `get_chapter`
-Retrieve specific document chapter content.
+### `get_document`
+Retrieve a document by path returned from search.
 
 **Parameters:**
-- `guideline_slug` (string, required): Document identifier
-- `chapter_title` (string, required): Chapter title
+- `path` (string, required): Absolute path from search result
 
 **Example:**
 ```json
 {
-  "method": "get_chapter", 
+  "method": "get_document",
   "params": {
-    "guideline_slug": "hc_rut_007_v10_lex_maria",
-    "chapter_title": "5. Lex Maria"
-  }
-}
-```
-
-### `list_chapters`
-List all chapters in a specific document.
-
-**Parameters:**
-- `guideline_slug` (string, required): Document identifier
-
-**Example:**
-```json
-{
-  "method": "list_chapters",
-  "params": {
-    "guideline_slug": "hc_hb_001_handbok_ledningssystem"
+    "path": "/Users/meditalks/Desktop/Code/HC/HC_Ledningssystem/.../document.pdf"
   }
 }
 ```
