@@ -35,3 +35,6 @@ temp/
 # MedCode processed data
 medcode/knowledge/
 !medcode/knowledge/.gitkeep
+# Local index
+hc_mcp/hc_knowledge.db
+hc_mcp/hc_knowledge.db-*
