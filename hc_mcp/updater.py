@@ -27,6 +27,7 @@ def save_update(title: str, body: str, tags=None) -> dict:
         repo_root = Path(__file__).parent.parent
         subprocess.run(["git", "add", str(path)], cwd=repo_root, check=False)
         subprocess.run(["git", "commit", "-m", f"Add update: {title}"], cwd=repo_root, check=False)
+        subprocess.run(["git", "push", "origin", "main"], cwd=repo_root, check=False)
     except Exception:
         pass
 
